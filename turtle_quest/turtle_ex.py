@@ -5,6 +5,7 @@ tess = turtle.Turtle()
 tess.shape("turtle")
 tess.color("blue")
 
+tess.speed(1)
 tess.penup()
 tess.stamp()
 for i in range(12):
