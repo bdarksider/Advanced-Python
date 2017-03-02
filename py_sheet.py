@@ -345,3 +345,73 @@ with opening('text.txt') as fd:
 
 with open("text.txt") as fd:
     fd.read()
+
+# @staticmethod - bound to class
+# @classmethod - like python function but in class
+class example(object):
+    @classmethod
+    def clsmethod(cls):
+        print("I am classmethod")
+    @staticmethod
+    def stmethod():
+        print("I am staticmethod")
+    def instmethod(self):
+        print("I am instancemethod")
+
+ex = example()
+ex.clsmethod()
+ex.stmethod()
+ex.instmethod()
+
+example.clsmethod()
+example.stmethod()
+# throws error
+# example.instmethod()
+
+# Abstract method - Metaclass
+# usually used to define methods but not to implement
+from abc import ABCMeta, abstractmethod
+class base(object):
+    __metaclass__ = ABCMeta
+    @abstractmethod
+    def absmethod(self):
+        """ Abstract method """
+
+class example(base):
+    def absmethod(self):
+        print("abstract")
+
+ex = example()
+ex.absmethod() # abstract
+# better way to define a meta class
+class base(object):
+    def absmethod(self):
+        raise NotImplementedError
+
+class example(base):
+    def absmethod(self):
+        print("abstract")
+
+ex = example()
+ex.absmethod()
+
+# Parsing csv string
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+
+import csv
+s = "foo,bar,baz"
+f = StringIO(s)
+for x in csv.reader(f): print(x)
+
+# or
+
+s = "foo,bar,baz"
+for x in csv.reader([s]): print(x)
+
+
+
+
