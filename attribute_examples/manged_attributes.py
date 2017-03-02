@@ -1,23 +1,23 @@
-# class Example(object):
-#     def __init__(self, value):
-#         self._val = value
-#     @property
-#     def val(self):
-#         return self._val
-#     @val.setter
-#     def val(self, value):
-#         if not isinstance(value, int):
-#             raise TypeError("Expected int")
-#         self._val = value
-#     @val.deleter
-#     def val(self):
-#         print("found me")
-#         del self._val
+class Example(object):
+    def __init__(self, value):
+        self._val = value
+    @property
+    def val(self):
+        return self._val
+    @val.setter
+    def val(self, value):
+        if not isinstance(value, int):
+            raise TypeError("Expected int")
+        self._val = value
+    @val.deleter
+    def val(self):
+        print("found me")
+        del self._val
 
-# ex = Example(123)
-# del ex.val
+ex = Example(123)
 # next line throws error if 
 # ex.val = "str"
+del ex
 
 # equivalent to 
 class Example(object):
@@ -39,3 +39,12 @@ class Example(object):
                    fdel=_val_deleter, doc=None)
 
 # have to add example to show how to set value
+
+# Computed attributes - Using property
+class Example(object):
+    @property
+    def square3(self):
+        return 2*3
+
+ex = Example()
+print(ex.square3)
