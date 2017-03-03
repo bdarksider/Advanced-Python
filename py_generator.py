@@ -148,3 +148,65 @@ except StopIteration as e:
     ret = e.value
 
 print(ret)
+
+# yield from EXP return RES
+def subgen():
+    yield 9523
+
+def delegating_gen():
+    yield from subgen()
+    return 3344
+
+try:
+    g = delegating_gen()
+    next(g)
+    next(g)
+except StopIteration as _e:
+    print(_e.value)
+
+# Generate sequences
+# get a list via generator
+def chain():
+    for x in 'ab':
+        yield x
+    for x in range(3):
+        yield x
+
+a = list(chain())
+print(a)
+
+# equivalent to 
+def chain():
+    yield from 'ab'
+    yield from range(3)
+
+a = list(chain())
+print(a)
+
+# RES = yield from EXP explaination
+def subgen():
+    for x in range(3):
+        yield x
+
+EXP = subgen()
+def delegating_gen():
+    _i = iter(EXP)
+    try:
+        _y = next(_i)
+        print("line 1", _y)
+    except StopIteration as _e:
+        RES = _e.value
+    else:
+        while True:
+            _s = yield _y
+            try:
+                _y = _i.send(_s)
+            except StopIteration as _e:
+                RES = _e.value
+                break
+
+g = delegating_gen()
+print(next(g))
+print(next(g))
+print(next(g))
+
