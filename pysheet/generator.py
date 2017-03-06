@@ -4,7 +4,6 @@ g = (x for x in range(2))
 print(next(g))
 
 # generate value via generator
-
 def prime(n):
     p = 2
     while n > 0:
@@ -14,7 +13,7 @@ def prime(n):
         else:
             yield p
             n -= 1
-        p += 1 
+        p += 1
 
 p = prime(3)
 print(next(p))
@@ -30,11 +29,11 @@ print([1, *g1, 2, *g2])
 
 # unpacking inside a set
 g = (x for x in [5, 5, 6, 6])
-print({*g}) # {5, 6}
+print({*g})  # {5, 6}
 
 # unpacking to variables
 g = (x for x in range(3))
-a, b, c = g 
+a, b, c = g
 print(a, b, c)
 
 g = (x for x in range(6))
@@ -54,11 +53,13 @@ print(*(x for x in range(3)))
 class Count(object):
     def __init__(self, n):
         self._n = n
+
     def __iter__(self):
         n = self._n
         while n > 0:
             yield n
             n -= 1
+
     def __reversed__(self):
         n = 1
         while n <= self._n:
@@ -87,13 +88,14 @@ try:
 except StopIteration:
     pass
 
-# yield from expression 
+# yield from expression
 # delegating gen do nothing(pipe)
 def subgen():
     try:
         yield 2334
     except ValueError:
         print("got value error")
+
 
 def delegating_gen():
     yield from subgen()
@@ -107,14 +109,16 @@ except StopIteration:
 
 # yield from + yield from
 import inspect
+
 def subgen():
     yield from range(5)
+
 
 def delegating_gen():
     yield from subgen()
 
 g = delegating_gen()
-print(inspect.getgeneratorstate(g)) # 'GEN_CREATED'
+print(inspect.getgeneratorstate(g))  # 'GEN_CREATED'
 print(next(g))
 print(next(g))
 
@@ -137,7 +141,7 @@ def average():
     return avg
 
 g = average()
-next(g) # start gen
+next(g)  # start gen
 
 g.send(3)
 g.send(5)
@@ -175,7 +179,9 @@ def chain():
 a = list(chain())
 print(a)
 
-# equivalent to 
+# equivalent to
+
+
 def chain():
     yield from 'ab'
     yield from range(3)
@@ -189,6 +195,7 @@ def subgen():
         yield x
 
 EXP = subgen()
+
 def delegating_gen():
     _i = iter(EXP)
     try:
@@ -209,4 +216,46 @@ g = delegating_gen()
 print(next(g))
 print(next(g))
 print(next(g))
+
+# for _ in gen() simulating yield from
+
+def subgen(n):
+    for x in range(n): yield(x)
+
+def gen(n):
+    yield from subgen(n)
+
+g = gen(3)
+print(next(g))
+print(next(g))
+
+# equal to
+def gen(n):
+    for x in subgen(n): yield x
+
+g = gen(3)
+print(next(g))
+print(next(g))
+
+# Check generator type
+from types import GeneratorType
+def gen_func():
+    yield 5566
+
+g = gen_func()
+print(isinstance(g, GeneratorType)) # True
+print(isinstance(123, GeneratorType)) # False
+
+# Check Generator State
+import inspect
+def gen_func():
+    yield 9527
+
+g = gen_func()
+print(inspect.getgeneratorstate(g))
+next(g)
+print(inspect.getgeneratorstate(g))
+g.close()
+print(inspect.getgeneratorstate(g))
+
 

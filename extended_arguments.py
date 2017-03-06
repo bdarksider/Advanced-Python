@@ -4,7 +4,7 @@ def hypervolume(*lengths):
     v = next(i)
     for length in i:
         v *= length
-    return v 
+    return v
 
 print(hypervolume(2,4))
 
@@ -14,10 +14,10 @@ print(hypervolume(2,4,6))
 # which is not meaningful so..
 
 def hypervolume(length, *lengths):
-    v = length 
+    v = length
     for item in lengths:
-        v *= item 
-    return v 
+        v *= item
+    return v
 
 print(hypervolume(2,4))
 
@@ -28,14 +28,11 @@ def tag(name, **attributes):
     for key, value in attributes.items():
         result += ' {k}="{v}"'.format(k=key, v=str(value))
     result += '>'
-    return result 
+    return result
 
 print(tag('img', src="moment.jpg", alt="Sunrise", border=1))
 
 # arguemt passed affter * args becomes keyword arguments, it must be passed
-# arguments after **kwargs is not allowed 
-def tagger(a, b, c, *args, kwarg1):
-    print(a)
+# arguments after **kwargs is not allowed
 
-print(tagger("this", "this", "those", kwarg1="this"))
 
