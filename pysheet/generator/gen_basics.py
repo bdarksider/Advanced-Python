@@ -258,4 +258,83 @@ print(inspect.getgeneratorstate(g))
 g.close()
 print(inspect.getgeneratorstate(g))
 
+# Context manager and generator
+import contextlib
+@contextlib.contextmanager
+def mylist():
+    try:
+        l = [1,2,3,4,5]
+        yield l
+    finally:
+        print("exit scope")
 
+with mylist() as l:
+    print(l)
+
+# @contextmanager internal working
+# This is being skipped will be done after PyCon Video
+class GeneratorCM(object):
+    def __init__(self, gen):
+        self._gen = gen
+
+    def __enter__(self):
+        return next(self._gen)
+
+    def __exit__(self, *exc_info):
+        try:
+            if exc_info[0] is None:
+                next(self._gen)
+            else:
+                self._gen.throw(*esc_info)
+            raise RuntimeError
+        except StopIteration:
+            return True
+        except:
+            raise
+
+# define a decorator
+def contextmanager(func):
+    def run(*a, **k):
+        return GeneratorCM(func(*a, **k))
+    return run
+
+# example of context manager
+@contextmanager
+def mylist():
+    try:
+        l = [1,2,3,4,5]
+        yield l
+    finally:
+        print("exit scope")
+
+with mylist() as l:
+    print(l)
+
+# End of skipping
+
+# yield from and __iter__
+class FakeGen:
+    def __iter__(self):
+        n = 0
+        while True:
+            yield n
+            n += 1
+    def __reversed__(self):
+        n = 9393
+        while True:
+            yield n
+            n -= 1
+
+def spam():
+    yield from FakeGen()
+
+s = spam()
+print(next(s))
+print(next(s))
+
+def reversed_spam():
+    yield from reversed(FakeGen())
+
+g = reversed_spam()
+print(next(g))
+print(next(g))
