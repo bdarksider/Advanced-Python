@@ -338,3 +338,40 @@ def reversed_spam():
 g = reversed_spam()
 print(next(g))
 print(next(g))
+
+# Closure in Python - using generator
+# nonlocal version
+def closure():
+    x = 5566
+    def inner_func():
+        nonlocal x
+        x += 1
+        return x
+    return inner_func
+
+c = closure()
+print(c())
+print(c())
+
+# class version
+class Closure:
+    def __init__(self):
+        self._x = 5566
+    def __call__(self):
+        self._x += 1
+        return self._x
+
+c = Closure()
+print(c())
+print(c())
+
+# generator version (best)
+def closure_gen():
+    x = 5566
+    while True:
+        x += 1
+        yield x
+
+g = closure_gen()
+print(next(g))
+print(next(g))
