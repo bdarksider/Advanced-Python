@@ -10,3 +10,16 @@ def g_fib(n):
 
 from collections import deque
 t = [g_fib(3), g_fib(5)]
+
+q = deque()
+q.extend(t)
+
+def run():
+    while q:
+        try:
+            t = q.popleft()
+            q.append(t)
+        except StopIteration:
+            print("Task done")
+
+run()
