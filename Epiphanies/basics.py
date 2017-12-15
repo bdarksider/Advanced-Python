@@ -37,5 +37,8 @@ import itertools
 for i in itertools.chain(range(-7, -3), range(254, 259)):
     print(i, id(i))
 
+i, *middle, j = 'ij' # 'i', [], 'j'
 
-
+# prints the number of reference to a specific object
+from sys import getrefcount as refs
+print(refs(None))
